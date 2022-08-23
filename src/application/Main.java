@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,16 +22,38 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 
 public class Main extends Application {
-	private int cont = 0;
+	private int cont = 0, auxiliar = 0;
 	private BufferedReader Reader, Reader2;
 	private File file;
 	private String Line;
 	private String vectorLineas[];
+	private String matrizObjetos[][];
 	private TableView <DatosEstudiantes> tablaNotas;
 	private TableColumn<DatosEstudiantes, String> colNotPromExamQuizTarea;
 	private TableColumn<DatosEstudiantes, String> colNotPromProyects;
 	private TableColumn<DatosEstudiantes, String> colNotFinal;
-	
+
+	public void ObjectParameters(){
+		matrizObjetos = new String[cont][12]; 
+		int column = 0;
+		for(int i=0; i<cont;i++) {
+			String objeto = vectorLineas[i];
+			int tamano = objeto.length();
+			for(int j=0;j<tamano;j++) {
+				if(j==tamano-1) {
+					matrizObjetos[i][column]= objeto.substring(auxiliar,j+1);
+				}
+				if(objeto.charAt(j) == ';') {
+					matrizObjetos[i][column]= objeto.substring(auxiliar,j);
+					column++;
+					auxiliar=j+1;
+				}
+			}
+			column=0;
+			auxiliar=0;
+		}
+	}
+
 	public void start(Stage Window) {
 		VBox root = new VBox();
 		HBox root2 = new HBox();
@@ -42,7 +64,7 @@ public class Main extends Application {
 		Label title = new Label("Notas de Estudiantes");
 		Label nombreArchivo = new Label("                  ");
 		Button buscarArchivo = new Button("Buscar Archivo");
-		
+
 		buscarArchivo.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				FileChooser fc = new FileChooser();
@@ -66,10 +88,11 @@ public class Main extends Application {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
+				ObjectParameters();
 			}
 		});
-		
-		
+
+
 		tablaNotas = new TableView<>();
 
 		TableColumn<DatosEstudiantes, String> colCarne = new TableColumn<>("Carné");
