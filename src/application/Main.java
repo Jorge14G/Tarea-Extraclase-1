@@ -7,6 +7,8 @@ import java.io.FileReader;
 import javax.swing.JOptionPane;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
@@ -28,6 +30,7 @@ public class Main extends Application {
 	private String Line;
 	private String vectorLineas[];
 	private String matrizObjetos[][];
+	private ObservableList <DatosEstudiantes> estudiantes;
 	private TableView <DatosEstudiantes> tablaNotas;
 	private TableColumn<DatosEstudiantes, String> colNotPromExamQuizTarea;
 	private TableColumn<DatosEstudiantes, String> colNotPromProyects;
@@ -52,6 +55,29 @@ public class Main extends Application {
 			column=0;
 			auxiliar=0;
 		}
+		DatosEstudiantes Objects[] = new DatosEstudiantes[cont];
+		for(int i = 0; i<cont;i++) {
+			if((matrizObjetos[i][5]).contentEquals("A")) {
+				Objects[i] = new TipoEstudianteA(matrizObjetos[i][0],matrizObjetos[i][1],matrizObjetos[i][2],matrizObjetos[i][3],matrizObjetos[i][4],matrizObjetos[i][5],matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8],matrizObjetos[i][9],matrizObjetos[i][10],matrizObjetos[i][11], "","","");
+				Objects[i].setNotPromExamQuizTarea(Integer.toString(Objects[i].CalcNotaPromedio(matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8])));
+				Objects[i].setNotPromProyects(Integer.toString(Objects[i].CalcNotaPromedio(matrizObjetos[i][9],matrizObjetos[i][10],matrizObjetos[i][11])));
+				Objects[i].setNotFinal(Integer.toString(Objects[i].NotaFinal(Objects[i].getNotPromExamQuizTarea(),Objects[i].getNotPromProyects())));
+				Objects[i].setNotPromProyects(null);
+			}
+			else {
+				Objects[i] = new TipoEstudianteB(matrizObjetos[i][0],matrizObjetos[i][1],matrizObjetos[i][2],matrizObjetos[i][3],matrizObjetos[i][4],matrizObjetos[i][5],matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8],matrizObjetos[i][9],matrizObjetos[i][10],matrizObjetos[i][11], "","","");
+				Objects[i].setNotPromExamQuizTarea(Integer.toString(Objects[i].CalcNotaPromedio(matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8])));
+				Objects[i].setNotPromProyects(Integer.toString(Objects[i].CalcNotaPromedio(matrizObjetos[i][9],matrizObjetos[i][10],matrizObjetos[i][11])));
+				Objects[i].setNotFinal(Integer.toString(Objects[i].NotaFinal(Objects[i].getNotPromExamQuizTarea(),Objects[i].getNotPromProyects())));
+				Objects[i].setNotPromExamQuizTarea(null);
+			}
+
+		}
+		estudiantes = FXCollections.observableArrayList(
+				Objects
+				);
+		tablaNotas.setItems(estudiantes);
+		tablaNotas.getColumns().addAll(colNotPromExamQuizTarea,colNotPromProyects, colNotFinal);
 	}
 
 	public void start(Stage Window) {

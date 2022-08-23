@@ -35,7 +35,18 @@ public class DatosEstudiantes{
 		this.NotPromExamQuizTarea = new SimpleStringProperty(NotPromExamQuizTarea);
 		this.NotPromProyects = new SimpleStringProperty(NotPromProyects);
 		this.NotFinal = new SimpleStringProperty(NotFinal);
+	}
 
+	public int CalcNotaPromedio(String NotPromExamenes, String NotPromQuices, String NotPromTareas) {
+		return 0;
+	}
+	public int CalcNotaPromedio(int NotProyect1, int NotProyect2, int NotProyect3) {
+		return 0;
+	}
+	public int NotaFinal(String NotPromExamQuizTarea, String NotPromProyectos) {
+		int NotaFinal;
+		NotaFinal= Integer.parseInt(NotPromExamQuizTarea) + Integer.parseInt(NotPromProyectos);
+		return NotaFinal;
 	}
 	public String getCarne(){
 		return Carne.get();
