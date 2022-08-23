@@ -1,6 +1,15 @@
 package application;
 	
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+import javax.swing.JOptionPane;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +22,11 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 
 public class Main extends Application {
+	private int cont = 0;
+	private BufferedReader Reader, Reader2;
+	private File file;
+	private String Line;
+	private String vectorLineas[];
 	private TableView <DatosEstudiantes> tablaNotas;
 	private TableColumn<DatosEstudiantes, String> colNotPromExamQuizTarea;
 	private TableColumn<DatosEstudiantes, String> colNotPromProyects;
@@ -28,6 +42,32 @@ public class Main extends Application {
 		Label title = new Label("Notas de Estudiantes");
 		Label nombreArchivo = new Label("                  ");
 		Button buscarArchivo = new Button("Buscar Archivo");
+		
+		buscarArchivo.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent event) {
+				FileChooser fc = new FileChooser();
+				file = fc.showOpenDialog(Window);
+				try {
+					Reader = new BufferedReader(new FileReader(file));
+					while((Line = Reader.readLine()) != null) {
+						cont +=1;			
+					}
+					Reader.close();
+					Line = null;
+					Reader2 = new BufferedReader(new FileReader(file));
+					vectorLineas = new String[cont];
+					cont= 0 ;
+					while((Line = Reader2.readLine()) != null) {	
+						vectorLineas[cont] = Line;
+						cont++;			
+					}
+					Reader2.close();
+					Line = null;
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e);
+				}
+			}
+		});
 		
 		
 		tablaNotas = new TableView<>();
@@ -79,7 +119,6 @@ public class Main extends Application {
 
 		tablaNotas.getColumns().addAll(colCarne, colTelefono, colNomApe, colCorreo, colNickname, colTipoEstudiante, colNotPromExamenes, colNotPromQuices, colNotPromTareas, colNotProyec1, colNotProyec2, colNotProyec3);
 
-		
 		root.getChildren().addAll(title, root2, tablaNotas);
 		root2.getChildren().addAll(nombreArchivo, buscarArchivo);
 		root.setAlignment(Pos.TOP_CENTER);
