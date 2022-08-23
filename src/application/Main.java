@@ -3,9 +3,7 @@ package application;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import javax.swing.JOptionPane;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 
+/**
+ * Clase que hereda de la clase Application, a través de la cual se genera
+ * la interfaz de la tabla que mostrará el archivo CSV.
+ * @author Jorge Luis Guillén Campos
+ *
+ */
 public class Main extends Application {
 	private int cont = 0, auxiliar = 0;
 	private BufferedReader Reader, Reader2;
@@ -36,6 +40,11 @@ public class Main extends Application {
 	private TableColumn<DatosEstudiantes, String> colNotPromProyects;
 	private TableColumn<DatosEstudiantes, String> colNotFinal;
 
+	/**
+	 * Método sin parámetros que se encarga de ordenar todos los datos extraídos del archivo CSV en una matriz
+	 * y a su vez crear los objetos estudiantes con todas sus características empleando los datos contenidos en
+	 * la matriz.
+	 */
 	public void ObjectParameters(){
 		matrizObjetos = new String[cont][12]; 
 		int column = 0;
@@ -57,6 +66,12 @@ public class Main extends Application {
 		}
 		DatosEstudiantes Objects[] = new DatosEstudiantes[cont];
 		for(int i = 0; i<cont;i++) {
+			/**
+			 * A partir de este espacio se generaron objetos basados en la clase Datos estudiantes, no obstante, 
+			 * se empleó polimorfismo, pues los objetos fueron instanciados con clases diferentes, según cada uno
+			 * de los tipos de estudiantes, empleando a su vez los métodos que se encuentran en sobrecarga y además
+			 * que fueron sobreescritos con respecto a la súperclase DatosEstudiantes.
+			 */
 			if((matrizObjetos[i][5]).contentEquals("A")) {
 				Objects[i] = new TipoEstudianteA(matrizObjetos[i][0],matrizObjetos[i][1],matrizObjetos[i][2],matrizObjetos[i][3],matrizObjetos[i][4],matrizObjetos[i][5],matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8],matrizObjetos[i][9],matrizObjetos[i][10],matrizObjetos[i][11], "","","");
 				Objects[i].setNotPromExamQuizTarea(Integer.toString(Objects[i].CalcNotaPromedio(matrizObjetos[i][6],matrizObjetos[i][7],matrizObjetos[i][8])));
@@ -80,6 +95,11 @@ public class Main extends Application {
 		tablaNotas.getColumns().addAll(colNotPromExamQuizTarea,colNotPromProyects, colNotFinal);
 	}
 
+	/**
+	 * Método que se encarga de crear y mostrar todos los elementos de la interfaz, así como buscar la dirección de un archivo CSV
+	 * y extraer sus elementos. Esta última función se desarrolla después de haber seleccionado un archivo de tipo CSV por
+	 * medio del respectivo botón ubicado en pantalla.
+	 */
 	public void start(Stage Window) {
 		VBox root = new VBox();
 		HBox root2 = new HBox();
@@ -92,6 +112,9 @@ public class Main extends Application {
 		Button buscarArchivo = new Button("Buscar Archivo");
 
 		buscarArchivo.setOnAction(new EventHandler<ActionEvent>(){
+			/**
+			 * Método que se encarga de asignarle una función al botón de buscarArchivo.
+			 */
 			public void handle(ActionEvent event) {
 				FileChooser fc = new FileChooser();
 				file = fc.showOpenDialog(Window);
@@ -173,6 +196,11 @@ public class Main extends Application {
 		root.setAlignment(Pos.TOP_CENTER);
 		root2.setAlignment(Pos.TOP_CENTER);
 	}
+	/**
+	 * Main o método principal que se encarga de inicializar y ejecutar las funciones
+	 * del programa consecuentemente. 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
